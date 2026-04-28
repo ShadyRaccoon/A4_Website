@@ -1,0 +1,31 @@
+MemberId,FirstName,LastName,Faculty,JoinDate,LeaveDate,Email,PhoneNumber
+1,Andrei,Popescu,Arhitectură,2022-10-01,,andreipopescu@test.com,0700000001
+2,Ioana,Mureșan,Arhitectură,2022-10-01,,ioanamuresan@test.com,0700000002
+3,Mihai,Constantin,Arhitectură,2023-03-01,,mihaiconstantin@test.com,0700000003
+4,Elena,Ionescu,Arhitectură,2023-03-01,,elenaionescu@test.com,0700000004
+5,Radu,Dumitrescu,Arhitectură și Urbanism,2023-10-01,,radudumitrescu@test.com,0700000005
+6,Ana,Popa,Arhitectură,2023-10-01,,anapopa@test.com,0700000006
+7,Cristian,Nistor,Arhitectură și Urbanism,2024-03-01,,cristiannistor@test.com,0700000007
+8,Maria,Stancu,Arhitectură,2024-03-01,,mariastancu@test.com,0700000008
+9,Alexandru,Gheorghe,Arhitectură,2024-10-01,,alexandrugheorghe@test.com,0700000009
+10,Bogdan,Admin,Arhitectură și Urbanism,2022-10-01,,bogdanadmin@test.com,0700000010
+11,Teodora,Marin,Arhitectură,2024-10-01,,teodoramarin@test.com,0700000011
+12,Vlad,Ionescu,Arhitectură și Urbanism,2024-10-01,,vladionescu@test.com,0700000012
+13,Simona,Dragomir,Arhitectură,2024-10-01,,simonadragomir@test.com,0700000013
+14,Cătălin,Rusu,Arhitectură și Urbanism,2024-10-01,,catalinrusu@test.com,0700000014
+15,Diana,Florescu,Arhitectură,2025-03-01,,dianaflorescu@test.com,0700000015
+16,Ionuț,Dima,Arhitectură și Urbanism,2025-03-01,,ionutdima@test.com,0700000016
+17,Raluca,Petre,Arhitectură,2025-03-01,,ralucapetre@test.com,0700000017
+18,Ștefan,Ungureanu,Arhitectură și Urbanism,2025-03-01,,stefanungureanu@test.com,0700000018
+19,Andreea,Lazăr,Arhitectură,2025-03-01,,andrealazar@test.com,0700000019
+20,Cosmin,Bălănescu,Arhitectură și Urbanism,2025-03-01,,cosminbalanescu@test.com,0700000020
+21,Larisa,Oprea,Arhitectură,2025-10-01,,larisaoprea@test.com,0700000021
+22,Gabriel,Matei,Arhitectură și Urbanism,2025-10-01,,gabrielmatei@test.com,0700000022
+23,Oana,Ciobanu,Arhitectură,2025-10-01,,oanaciobanu@test.com,0700000023
+24,Bogdan,Toma,Arhitectură și Urbanism,2025-10-01,,bogdantoma@test.com,0700000024
+25,Irina,Niculescu,Arhitectură,2025-10-01,,irinaniculescu@test.com,0700000025
+26,Marius,Cojocaru,Arhitectură și Urbanism,2025-10-01,,mariuscojocaru@test.com,0700000026
+27,Bianca,Stoian,Arhitectură,2025-10-01,,biancastoian@test.com,0700000027
+28,Octavian,Dănilă,Arhitectură și Urbanism,2025-10-01,,octaviandanila@test.com,0700000028
+29,Nicoleta,Apostol,Arhitectură,2025-10-01,,nicoletaapostol@test.com,0700000029
+30,Sergiu,Moldovan,Arhitectură și Urbanism,2025-10-01,,sergiumoldovan@test.com,0700000030

@@ -1,0 +1,6 @@
+@A4_Rebuild_HostAddress = http://localhost:5242
+
+GET {{A4_Rebuild_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
