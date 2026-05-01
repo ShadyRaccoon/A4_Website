@@ -38,6 +38,6 @@ public class DepartmentSeeder
     (
         int DepartmentId,
         string Name,
-        string Alias,
+        string Alias
     );
 }
