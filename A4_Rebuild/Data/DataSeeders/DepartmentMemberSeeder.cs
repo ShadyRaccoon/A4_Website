@@ -11,7 +11,7 @@ public class DepartmentMemberSeeder
     {
         if (dbContext.DepartmentMembers.Any()) return;
 
-        var csvPath = Path.Combine(AppContext.BaseDirectory, "SeedingData", "departmentMember.csv");
+        var csvPath = Path.Combine(AppContext.BaseDirectory, "Data", "SeedingData", "departmentMember.csv");
 
         var config = new CsvConfiguration(CultureInfo.InvariantCulture)
         {
