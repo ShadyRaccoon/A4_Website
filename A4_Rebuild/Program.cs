@@ -63,6 +63,15 @@ builder.Services.AddControllers();
 
 var app = builder.Build();
 
+if (app.Environment.IsDevelopment())
+{
+    using var scope = app.Services.CreateScope();
+    var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<UserAccount>>();
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<Role>>();
+    await DatabaseSeeder.SeedAsync(context, userManager, roleManager);
+}
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseHsts();
