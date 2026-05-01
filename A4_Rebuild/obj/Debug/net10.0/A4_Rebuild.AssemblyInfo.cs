@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("A4_Rebuild")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+46b99d996303a8d26ae7cf8b864840eccb24d03e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+76f9ba897a9a78ea622ed8499f45c5cb800ffdbd")]
 [assembly: System.Reflection.AssemblyProductAttribute("A4_Rebuild")]
 [assembly: System.Reflection.AssemblyTitleAttribute("A4_Rebuild")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
