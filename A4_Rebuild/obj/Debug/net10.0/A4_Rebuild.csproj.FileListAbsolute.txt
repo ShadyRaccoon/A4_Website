@@ -130,3 +130,6 @@
 /home/bogdan/_Projects/A4/A4_Rebuild/bin/Debug/net10.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 /home/bogdan/_Projects/A4/A4_Rebuild/bin/Debug/net10.0/Microsoft.IdentityModel.Tokens.dll
 /home/bogdan/_Projects/A4/A4_Rebuild/bin/Debug/net10.0/System.IdentityModel.Tokens.Jwt.dll
+/home/bogdan/_Projects/A4/A4_Rebuild/bin/Debug/net10.0/Data/SeedingData/departmentMembers.csv
+/home/bogdan/_Projects/A4/A4_Rebuild/bin/Debug/net10.0/Data/SeedingData/departments.csv
+/home/bogdan/_Projects/A4/A4_Rebuild/bin/Debug/net10.0/Data/SeedingData/members.csv

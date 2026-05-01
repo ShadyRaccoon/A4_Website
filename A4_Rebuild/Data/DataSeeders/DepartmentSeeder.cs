@@ -12,7 +12,7 @@ public class DepartmentSeeder
     {
         if (dbContext.Departments.Any()) return;
 
-        var csvPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SeedingData", "departments.csv");
+        var csvPath = Path.Combine(AppContext.BaseDirectory, "SeedingData", "departments.csv");
 
         var config = new CsvConfiguration(CultureInfo.InvariantCulture){
             HasHeaderRecord = true
