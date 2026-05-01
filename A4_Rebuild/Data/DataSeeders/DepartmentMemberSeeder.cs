@@ -2,6 +2,7 @@ using A4_Rebuild.Models;
 using CsvHelper.Configuration;
 using CsvHelper;
 using System.Globalization;
+
 namespace A4_Rebuild.Data.DataSeeders;
 
 public class DepartmentMemberSeeder
@@ -40,5 +41,5 @@ public class DepartmentMemberSeeder
         int DepartmentId,
         string JoinDate,
         string LeaveDate
-        );
+    );
 }
