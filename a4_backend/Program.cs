@@ -23,6 +23,19 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>()!;
 
+var corsAllowPolicy = "CorsPolicy";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy( 
+        name : corsAllowPolicy, 
+        policy =>
+        {
+            // TODO - add frontend origins here when frontend is done
+            policy.WithOrigins();
+        }
+    );
+});
+
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
 
 builder.Services.AddAuthentication(options =>
@@ -79,6 +92,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
+app.UseCors(corsAllowPolicy);
 app.UseAuthentication();
 app.UseAuthorization();
 
