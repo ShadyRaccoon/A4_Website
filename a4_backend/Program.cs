@@ -7,6 +7,7 @@ using a4_backend.Models;
 using a4_backend.Settings;
 using a4_backend.Services;
 using System.Text;
+using a4_backend.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,10 +32,19 @@ builder.Services.AddCors(options =>
         policy =>
         {
             // TODO - add frontend origins here when frontend is done
-            policy.WithOrigins();
+            // policy.WithOrigins();
+            if (builder.Environment.IsDevelopment())
+            {
+                policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+            }
         }
     );
 });
+
+builder.Services.AddOptions<BlobStorageOptions>()
+    .BindConfiguration("AzureBlobStorage");
+
+builder.Services.AddScoped<IBlobStorageService, BlobStorageService>();
 
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
 

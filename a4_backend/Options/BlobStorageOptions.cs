@@ -1,4 +1,4 @@
-namespace a4_backend;
+namespace a4_backend.Options;
 
 public class BlobStorageOptions
 {
