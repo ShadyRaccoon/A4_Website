@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using a4_backend.Data;
 
@@ -11,9 +12,11 @@ using a4_backend.Data;
 namespace a4_backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260608185323_AddCmsModels")]
+    partial class AddCmsModels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -281,7 +284,13 @@ namespace a4_backend.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("varchar(255)");
+
                     b.HasKey("MemberId");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Members", (string)null);
                 });
@@ -499,8 +508,7 @@ namespace a4_backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MemberId")
-                        .IsUnique();
+                    b.HasIndex("MemberId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -612,6 +620,16 @@ namespace a4_backend.Migrations
                     b.Navigation("Member");
                 });
 
+            modelBuilder.Entity("a4_backend.Models.Member", b =>
+                {
+                    b.HasOne("a4_backend.Models.UserAccount", "UserAccount")
+                        .WithOne()
+                        .HasForeignKey("a4_backend.Models.Member", "UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("UserAccount");
+                });
+
             modelBuilder.Entity("a4_backend.Models.Post", b =>
                 {
                     b.HasOne("a4_backend.Models.UserAccount", "Author")
@@ -661,9 +679,9 @@ namespace a4_backend.Migrations
             modelBuilder.Entity("a4_backend.Models.UserAccount", b =>
                 {
                     b.HasOne("a4_backend.Models.Member", "Member")
-                        .WithOne("UserAccount")
-                        .HasForeignKey("a4_backend.Models.UserAccount", "MemberId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .WithMany()
+                        .HasForeignKey("MemberId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Member");
@@ -677,8 +695,6 @@ namespace a4_backend.Migrations
             modelBuilder.Entity("a4_backend.Models.Member", b =>
                 {
                     b.Navigation("DepartmentMembers");
-
-                    b.Navigation("UserAccount");
                 });
 #pragma warning restore 612, 618
         }

@@ -13,6 +13,12 @@ public class AppDbContext : IdentityDbContext<UserAccount, Role, string>
     public DbSet<Department> Departments { get; set; }
     public DbSet<DepartmentMember> DepartmentMembers { get; set; }
     public DbSet<RoleAssignment> RoleAssignments { get; set; }
+    public DbSet<AccountRequest> AccountRequests { get; set; }
+    public DbSet<DeviceToken> DeviceTokens { get; set; }
+    public DbSet<RegisteredDevice> RegisteredDevices { get; set; }
+    public DbSet<Picture> Pictures { get; set; }
+    public DbSet<Post> Posts { get; set; }
+
     
     protected override void OnModelCreating(ModelBuilder builder)
     {
