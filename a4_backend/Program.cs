@@ -41,6 +41,10 @@ builder.Services.AddCors(options =>
     );
 });
 
+builder.Services.AddOptions<EmailSenderOptions>()
+    .BindConfiguration("Email");
+builder.Services.AddScoped<IEmailSenderService, EmailSenderService>();
+
 builder.Services.AddOptions<BlobStorageOptions>()
     .BindConfiguration("AzureBlobStorage");
 
