@@ -49,6 +49,8 @@ builder.Services.AddOptions<BlobStorageOptions>()
     .BindConfiguration("AzureBlobStorage");
 
 builder.Services.AddScoped<IBlobStorageService, BlobStorageService>();
+builder.Services.AddScoped<IPostService, PostService>();
+builder.Services.AddScoped<IMemberService, MemberService>();
 
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
 
