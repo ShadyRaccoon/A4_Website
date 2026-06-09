@@ -22,4 +22,26 @@ public class AuthController (UserManager<UserAccount> userManager, TokenService 
 
         return Ok(new { token });
     }
+    
+    [HttpPost("register")]
+    public async Task<IActionResult> Register([FromBody] RegisterDto dto)
+    {
+        var user = new UserAccount
+        {
+            UserName = dto.UserName,
+            Email = dto.Email
+        };
+
+        var result = await userManager.CreateAsync(user, dto.Password);
+
+        if (!result.Succeeded)
+            return BadRequest(result.Errors);
+
+        await userManager.AddToRoleAsync(user, "Member");
+
+        var roles = await userManager.GetRolesAsync(user);
+        var token = tokenService.GenerateToken(user, roles);
+
+        return Ok(new { token });
+    }
 }
