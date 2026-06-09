@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@600&family=Host+Grotesk:wght@400&family=Outfit:wght@400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@600&family=Host+Grotesk:wght@400&family=Outfit:wght@400&family=Young+Serif&display=swap');
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #F5F0E8;
+  --text: #1A1A1A;
+  --accent: #E8B84B;
+
+  --font-heading: 'Lexend', sans-serif;
+  --font-body: 'Host Grotesk', sans-serif;
+  --font-meta: 'Outfit', sans-serif;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+}
