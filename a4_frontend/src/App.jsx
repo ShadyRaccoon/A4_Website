@@ -9,9 +9,15 @@ import Contacts from './pages/Contacts'
 import Login from './pages/admin/Login'
 import Dashboard from './pages/admin/Dashboard'
 import DashboardLayout from './pages/admin/DashboardLayout'
-
-
-
+import Posts from './pages/admin/Posts'
+import Members from './pages/admin/Members'
+import AdminDepartments from './pages/admin/AdminDepartments'
+import Accounts from './pages/admin/Accounts'
+import AccountRequests from './pages/admin/AccountRequests'
+import Devices from './pages/admin/Devices'
+import NewPost from './pages/admin/NewPost'
+import PostPreview from './pages/admin/PostPreview'
+import NewMember from './pages/admin/NewMember'
 
 
 function App() {
@@ -27,12 +33,15 @@ function App() {
         <Route path="/admin/login" element={<Login />} />
         <Route path="/panou" element={<DashboardLayout role="admin" />}>
           <Route index element={<Dashboard role="admin" />} />
-          <Route path="postari" element={<div>Postări</div>} />
-          <Route path="membri" element={<div>Membri</div>} />
-          <Route path="departamente" element={<div>Departamente</div>} />
-          <Route path="conturi" element={<div>Conturi</div>} />
-          <Route path="cereri" element={<div>Cereri Cont</div>} />
-          <Route path="dispozitive" element={<div>Dispozitive</div>} />
+          <Route path="postari" element={<Posts />} />
+          <Route path="postari/nou" element={<NewPost />} />
+          <Route path="postari/preview" element={<PostPreview />} />
+          <Route path="membri" element={<Members />} />
+          <Route path="membri/nou" element={<NewMember />} />
+          <Route path="departamente" element={<AdminDepartments />} />
+          <Route path="conturi" element={<Accounts />} />
+          <Route path="cereri" element={<AccountRequests />} />
+          <Route path="dispozitive" element={<Devices />} />
         </Route>
       </Routes>
       <Footer />
