@@ -26,7 +26,8 @@
 
 .image img {
   width: 100%;
-  height: auto;
+  max-height: 300px;
+  object-fit: cover;
   display: block;
   border-radius: 4px;
 }
@@ -57,4 +58,18 @@
   font-size: 0.85rem;
   color: var(--text);
   opacity: 0.5;
+}
+
+@media (max-width: 768px) {
+  .post {
+    flex-direction: column;
+  }
+
+  .reversed {
+    flex-direction: column;
+  }
+
+  .section {
+    padding: 3rem 1.5rem;
+  }
 }
