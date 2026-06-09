@@ -51,6 +51,7 @@ builder.Services.AddOptions<BlobStorageOptions>()
 builder.Services.AddScoped<IBlobStorageService, BlobStorageService>();
 builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddScoped<IMemberService, MemberService>();
+builder.Services.AddScoped<IAccountRequestService, AccountRequestService>();
 
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
 
