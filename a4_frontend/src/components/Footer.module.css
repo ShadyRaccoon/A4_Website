@@ -70,3 +70,14 @@
   color: var(--bg);
   opacity: 0.4;
 }
+
+@media (max-width: 768px) {
+  .top {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .footer {
+    padding: 3rem 1.5rem 0;
+  }
+}
