@@ -1,19 +1,33 @@
+import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../../context/AuthContext'
 import styles from './AdminTable.module.css'
 
-const departments = [
-  { id: 1, name: "Resurse Umane", alias: "HR" },
-  { id: 2, name: "Fundraising", alias: "FR" },
-  { id: 3, name: "Imagine", alias: "IMG" },
-  { id: 4, name: "Socio-Cultural", alias: "SOCIO" },
-  { id: 5, name: "Relații Publice", alias: "PR" },
-  { id: 6, name: "Reprezentare", alias: "REPRE" },
-]
-
 function AdminDepartments() {
+  const navigate = useNavigate()
+  const { token } = useAuth()
+  const [departments, setDepartments] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetch('http://localhost:5242/api/department', {
+      headers: { 'Authorization': `Bearer ${token}` }
+    })
+      .then(res => res.json())
+      .then(data => setDepartments(data))
+      .catch(err => console.error(err))
+      .finally(() => setLoading(false))
+  }, [token])
+
+  if (loading) return <div className={styles.loading}>Se încarcă...</div>
+
   return (
     <div>
       <div className={styles.header}>
         <h1 className={styles.title}>Departamente</h1>
+        <span style={{ fontFamily: 'var(--font-meta)', fontSize: '0.9rem', opacity: 0.5 }}>
+          {departments.length} departamente
+        </span>
       </div>
       <table className={styles.table}>
         <thead>
@@ -24,7 +38,11 @@ function AdminDepartments() {
         </thead>
         <tbody>
           {departments.map(dept => (
-            <tr key={dept.id}>
+            <tr
+              key={dept.departmentId}
+              onClick={() => navigate(`/panou/departamente/${dept.departmentId}`)}
+              style={{ cursor: 'pointer' }}
+            >
               <td>{dept.name}</td>
               <td>{dept.alias}</td>
             </tr>

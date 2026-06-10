@@ -110,5 +110,12 @@ export const api = {
     method: 'POST',
     headers: authHeaders(token),
     body: JSON.stringify({ url })
-  })
+  }),
+
+  updateMember: (token, id, dto) =>
+  fetch(`${BASE_URL}/member/${id}`, {
+    method: 'PUT',
+    headers: authHeaders(token),
+    body: JSON.stringify(dto)
+  }),
 }

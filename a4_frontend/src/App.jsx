@@ -21,6 +21,10 @@ import NewMember from './pages/admin/NewMember'
 import ProtectedRoute from './components/ProtectedRoute'
 import { AuthProvider } from './context/AuthContext.jsx'
 import EditPost from './pages/admin/EditPost'
+import EditMember from './pages/admin/EditMember'
+import DepartmentDetail from './pages/admin/DepartmentDetail'
+
+
 
 function App() {
   return (
@@ -50,6 +54,8 @@ function App() {
             <Route path="cereri" element={<AccountRequests />} />
             <Route path="dispozitive" element={<Devices />} />
             <Route path="postari/editeaza/:id" element={<EditPost />} />
+            <Route path="membri/editeaza/:id" element={<EditMember />} />
+            <Route path="departamente/:id" element={<DepartmentDetail />} />
           </Route>
         </Routes>
         <Footer />
