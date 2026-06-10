@@ -8,16 +8,15 @@ using a4_backend.Settings;
 using a4_backend.Services;
 using System.Text;
 using a4_backend.Options;
+using a4_backend.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// User secrets in dev
 if (builder.Environment.IsDevelopment())
 {
     builder.Configuration.AddUserSecrets<Program>();
 }
 
-// MySQL
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 44))));
@@ -27,12 +26,10 @@ var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSetting
 var corsAllowPolicy = "CorsPolicy";
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy( 
-        name : corsAllowPolicy, 
+    options.AddPolicy(
+        name: corsAllowPolicy,
         policy =>
         {
-            // TODO - add frontend origins here when frontend is done
-            // policy.WithOrigins();
             if (builder.Environment.IsDevelopment())
             {
                 policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
@@ -55,6 +52,19 @@ builder.Services.AddScoped<IAccountRequestService, AccountRequestService>();
 builder.Services.AddScoped<IDeviceService, DeviceService>();
 
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
+builder.Services.AddScoped<TokenService>();
+
+builder.Services.AddIdentity<UserAccount, Role>(options =>
+    {
+        options.Password.RequireDigit = true;
+        options.Password.RequireLowercase = true;
+        options.Password.RequireUppercase = true;
+        options.Password.RequireNonAlphanumeric = false;
+        options.Password.RequiredLength = 6;
+        options.User.RequireUniqueEmail = true;
+    })
+    .AddEntityFrameworkStores<AppDbContext>()
+    .AddDefaultTokenProviders();
 
 builder.Services.AddAuthentication(options =>
 {
@@ -74,21 +84,19 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-builder.Services.AddScoped<TokenService>();
-
-// Identity
-builder.Services.AddIdentity<UserAccount, Role>(options =>
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.Events.OnRedirectToLogin = context =>
     {
-        options.Password.RequireDigit = true;
-        options.Password.RequireLowercase = true;
-        options.Password.RequireUppercase = true;
-        options.Password.RequireNonAlphanumeric = false;
-        options.Password.RequiredLength = 6;
-    
-        options.User.RequireUniqueEmail = true;
-    })
-    .AddEntityFrameworkStores<AppDbContext>()
-    .AddDefaultTokenProviders();
+        context.Response.StatusCode = 401;
+        return Task.CompletedTask;
+    };
+    options.Events.OnRedirectToAccessDenied = context =>
+    {
+        context.Response.StatusCode = 403;
+        return Task.CompletedTask;
+    };
+});
 
 builder.Services.AddControllers();
 
@@ -111,6 +119,7 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRouting();
 app.UseCors(corsAllowPolicy);
+app.UseMiddleware<DeviceCheckMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
 
