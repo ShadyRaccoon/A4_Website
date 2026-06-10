@@ -8,10 +8,12 @@ namespace a4_backend.Services;
 public class PostService : IPostService
 {
     private readonly AppDbContext _context;
+    private readonly IBlobStorageService _blobStorageService;
 
-    public PostService(AppDbContext context)
+    public PostService(AppDbContext context, IBlobStorageService blobStorageService)
     {
         _context = context;
+        _blobStorageService = blobStorageService;
     }
 
     public async Task<List<PostResponseDto>> GetAllAsync(bool includeHidden = false)
@@ -75,8 +77,16 @@ public class PostService : IPostService
 
     public async Task<PostResponseDto?> UpdateAsync(int id, UpdatePostDto dto, string authorId)
     {
-        var post = await _context.Posts.FindAsync(id);
+        var post = await _context.Posts
+            .Include(p => p.Picture)
+            .FirstOrDefaultAsync(p => p.PostId == id);
         if (post == null) return null;
+
+        if (post.Picture != null && dto.PictureId != post.PictureId)
+        {
+            await _blobStorageService.DeleteFileAsync(post.Picture.Url);
+            _context.Pictures.Remove(post.Picture);
+        }
 
         post.Title = dto.Title;
         post.Body = dto.Body;
@@ -99,8 +109,16 @@ public class PostService : IPostService
 
     public async Task<bool> DeleteAsync(int id)
     {
-        var post = await _context.Posts.FindAsync(id);
+        var post = await _context.Posts
+            .Include(p => p.Picture)
+            .FirstOrDefaultAsync(p => p.PostId == id);
         if (post == null) return false;
+
+        if (post.Picture != null)
+        {
+            await _blobStorageService.DeleteFileAsync(post.Picture.Url);
+            _context.Pictures.Remove(post.Picture);
+        }
 
         _context.Posts.Remove(post);
         await _context.SaveChangesAsync();

@@ -1,14 +1,34 @@
-import styles from './AdminTable.module.css'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-
-const members = [
-  { id: 1, name: "Bogdan Mladin", faculty: "Arhitectură", email: "bogdan@a4.ro", joinDate: "Oct 2023", left: false },
-  { id: 2, name: "Ana Pop", faculty: "Urbanism", email: "ana@a4.ro", joinDate: "Oct 2022", left: false },
-  { id: 3, name: "Mihai Dumitrescu", faculty: "Arhitectură", email: "mihai@a4.ro", joinDate: "Mar 2024", left: true },
-]
+import { useAuth } from '../../context/AuthContext'
+import { api } from '../../api/api'
+import styles from './AdminTable.module.css'
 
 function Members() {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
+  const { token } = useAuth()
+  const [members, setMembers] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    api.getMembers(token)
+      .then(res => res.json())
+      .then(data => setMembers(data))
+      .catch(err => console.error(err))
+      .finally(() => setLoading(false))
+  }, [token])
+
+  const handleMarkLeft = async (id) => {
+    if (!confirm('Ești sigur?')) return
+    try {
+      await api.markMemberLeft(token, id)
+      setMembers(members.map(m => m.memberId === id ? { ...m, leaveDate: 'left' } : m))
+    } catch (err) {
+      alert('Eroare: ' + err.message)
+    }
+  }
+
+  if (loading) return <div className={styles.loading}>Se încarcă...</div>
 
   return (
     <div>
@@ -31,20 +51,22 @@ function Members() {
         </thead>
         <tbody>
           {members.map(member => (
-            <tr key={member.id}>
-              <td>{member.name}</td>
+            <tr key={member.memberId}>
+              <td>{member.firstName} {member.lastName}</td>
               <td>{member.faculty}</td>
               <td>{member.email}</td>
               <td>{member.joinDate}</td>
               <td>
-                <span className={member.left ? styles.badgeHidden : styles.badgeVisible}>
-                  {member.left ? 'Plecat' : 'Activ'}
+                <span className={member.leaveDate ? styles.badgeHidden : styles.badgeVisible}>
+                  {member.leaveDate ? 'Plecat' : 'Activ'}
                 </span>
               </td>
               <td className={styles.actions}>
                 <button className={styles.btnEdit}>Editează</button>
-                {!member.left && (
-                  <button className={styles.btnDanger}>Marchează ca plecat</button>
+                {!member.leaveDate && (
+                  <button className={styles.btnDanger} onClick={() => handleMarkLeft(member.memberId)}>
+                    Marchează ca plecat
+                  </button>
                 )}
               </td>
             </tr>

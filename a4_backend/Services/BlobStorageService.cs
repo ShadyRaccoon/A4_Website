@@ -56,4 +56,15 @@ public class BlobStorageService : IBlobStorageService
             FileDownloadName = blobUri.Segments.Last()
         };
     }
+    
+    public async Task DeleteFileAsync(string url)
+    {
+        Uri blobUri = new(url);
+        StorageSharedKeyCredential credentials = new(
+            _blobStorage.StorageAccountName,
+            _blobStorage.StorageAccountKey);
+
+        BlobClient blobClient = new(blobUri, credentials);
+        await blobClient.DeleteIfExistsAsync();
+    }
 }

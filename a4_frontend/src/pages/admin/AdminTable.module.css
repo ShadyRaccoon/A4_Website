@@ -228,3 +228,11 @@
   opacity: 0.75;
   line-height: 1.8;
 }
+
+.loading {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--text);
+  opacity: 0.5;
+  padding: 2rem 0;
+}

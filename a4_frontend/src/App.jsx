@@ -18,34 +18,43 @@ import Devices from './pages/admin/Devices'
 import NewPost from './pages/admin/NewPost'
 import PostPreview from './pages/admin/PostPreview'
 import NewMember from './pages/admin/NewMember'
-
+import ProtectedRoute from './components/ProtectedRoute'
+import { AuthProvider } from './context/AuthContext.jsx'
+import EditPost from './pages/admin/EditPost'
 
 function App() {
   return (
-    <BrowserRouter>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/articles" element={<Articles />} />
-        <Route path="/contacts" element={<Contacts />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/departments" element={<Departments />} />
-        <Route path="/admin/login" element={<Login />} />
-        <Route path="/panou" element={<DashboardLayout role="admin" />}>
-          <Route index element={<Dashboard role="admin" />} />
-          <Route path="postari" element={<Posts />} />
-          <Route path="postari/nou" element={<NewPost />} />
-          <Route path="postari/preview" element={<PostPreview />} />
-          <Route path="membri" element={<Members />} />
-          <Route path="membri/nou" element={<NewMember />} />
-          <Route path="departamente" element={<AdminDepartments />} />
-          <Route path="conturi" element={<Accounts />} />
-          <Route path="cereri" element={<AccountRequests />} />
-          <Route path="dispozitive" element={<Devices />} />
-        </Route>
-      </Routes>
-      <Footer />
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/articles" element={<Articles />} />
+          <Route path="/contacts" element={<Contacts />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/departments" element={<Departments />} />
+          <Route path="/admin/login" element={<Login />} />
+          <Route path="/panou" element={
+            <ProtectedRoute>
+              <DashboardLayout />
+            </ProtectedRoute>
+          }>
+            <Route index element={<Dashboard />} />
+            <Route path="postari" element={<Posts />} />
+            <Route path="postari/nou" element={<NewPost />} />
+            <Route path="postari/preview" element={<PostPreview />} />
+            <Route path="membri" element={<Members />} />
+            <Route path="membri/nou" element={<NewMember />} />
+            <Route path="departamente" element={<AdminDepartments />} />
+            <Route path="conturi" element={<Accounts />} />
+            <Route path="cereri" element={<AccountRequests />} />
+            <Route path="dispozitive" element={<Devices />} />
+            <Route path="postari/editeaza/:id" element={<EditPost />} />
+          </Route>
+        </Routes>
+        <Footer />
+      </BrowserRouter>
+    </AuthProvider>
   )
 }
 

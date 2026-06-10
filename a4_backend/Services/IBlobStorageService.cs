@@ -6,4 +6,5 @@ public interface IBlobStorageService
 {
     Task<string> UploadFileAsync(IFormFile file);
     Task<FileContentResult> DownloadFileAsync(string url);
+    Task DeleteFileAsync(string url);
 }

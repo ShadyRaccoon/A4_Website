@@ -1,16 +1,37 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../../context/AuthContext'
 import styles from './Login.module.css'
 
 function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
+  const { login } = useAuth()
+  const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
-    // wire to API later
-    console.log(email, password)
+
+    try {
+      const response = await fetch('http://localhost:5242/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      })
+
+      if (!response.ok) {
+        setError('Email sau parolă incorectă.')
+        return
+      }
+
+      const data = await response.json()
+      login(data.token)
+      navigate('/panou')
+    } catch {
+      setError('Eroare de conexiune. Încearcă din nou.')
+    }
   }
 
   return (
