@@ -12,6 +12,9 @@ function Devices() {
   const [search, setSearch] = useState('')
   const [debouncedSearch, setDebouncedSearch] = useState('')
   const [page, setPage] = useState(1)
+  const [showForm, setShowForm] = useState(false)
+  const [deviceEmail, setDeviceEmail] = useState('')
+  const [sending, setSending] = useState(false)
 
   useEffect(() => {
     const timer = setTimeout(() => setDebouncedSearch(search), 300)
@@ -53,6 +56,26 @@ function Devices() {
     }
   }
 
+  const handleSendToken = async () => {
+    if (!deviceEmail) return
+    setSending(true)
+    try {
+      const res = await api.sendDeviceTokenByEmail(token, deviceEmail)
+      if (!res.ok) {
+        const msg = await res.text()
+        alert(msg)
+        return
+      }
+      alert('Token trimis!')
+      setDeviceEmail('')
+      setShowForm(false)
+    } catch (err) {
+      alert('Eroare: ' + err.message)
+    } finally {
+      setSending(false)
+    }
+  }
+
   const filtered = devices.filter(d => {
     const q = debouncedSearch.toLowerCase()
     return d.userEmail.toLowerCase().includes(q)
@@ -67,7 +90,33 @@ function Devices() {
     <div>
       <div className={styles.header}>
         <h1 className={styles.title}>Dispozitive</h1>
+        <button className={styles.btnPrimary} onClick={() => setShowForm(!showForm)}>
+          + Adaugă dispozitiv
+        </button>
       </div>
+
+      {showForm && (
+        <div className={styles.formCard}>
+          <h2 className={styles.formTitle}>Trimite token înregistrare</h2>
+          <div className={styles.formField}>
+            <label>Email cont</label>
+            <input
+              type="email"
+              placeholder="email@example.com"
+              value={deviceEmail}
+              onChange={e => setDeviceEmail(e.target.value)}
+            />
+          </div>
+          <div className={styles.formActions}>
+            <button className={styles.btnEdit} onClick={() => { setShowForm(false); setDeviceEmail('') }}>
+              Anulează
+            </button>
+            <button className={styles.btnPrimary} onClick={handleSendToken} disabled={!deviceEmail || sending}>
+              {sending ? 'Se trimite...' : 'Trimite token'}
+            </button>
+          </div>
+        </div>
+      )}
 
       <div className={styles.formField} style={{ maxWidth: 360, marginBottom: '1.5rem' }}>
         <input

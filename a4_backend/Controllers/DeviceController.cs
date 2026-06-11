@@ -18,27 +18,11 @@ public class DeviceController : ControllerBase
     }
 
     [HttpPost("register")]
-    [Authorize]
     public async Task<IActionResult> Register([FromBody] RegisterDeviceDto dto)
     {
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
-        var deviceIdentifier = Request.Cookies["DeviceId"];
-
-        if (string.IsNullOrEmpty(deviceIdentifier))
-        {
-            deviceIdentifier = Guid.NewGuid().ToString();
-            Response.Cookies.Append("DeviceId", deviceIdentifier, new CookieOptions
-            {
-                HttpOnly = true,
-                Expires = DateTimeOffset.UtcNow.AddYears(1),
-                SameSite = SameSiteMode.Strict
-            });
-        }
-
-        var result = await _deviceService.RegisterAsync(dto.Token, userId, deviceIdentifier);
-        if (!result) return BadRequest("Invalid or expired token.");
-
-        return Ok("Device registered successfully.");
+        var result = await _deviceService.RegisterAsync(dto.Token, dto.DeviceIdentifier);
+        if (!result) return BadRequest("Token invalid sau expirat.");
+        return Ok("Dispozitiv înregistrat cu succes.");
     }
 
     [HttpGet]

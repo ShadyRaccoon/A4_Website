@@ -128,28 +128,77 @@ function DepartmentDetail() {
             <input
               placeholder="Caută după nume sau email..."
               value={addSearch}
-              onChange={e => setAddSearch(e.target.value)}
+              onChange={e => { setAddSearch(e.target.value); setSelectedMemberId('') }}
             />
-          </div>
-          <div className={styles.formField}>
-            <label>Selectează membru</label>
-            <select value={selectedMemberId} onChange={e => setSelectedMemberId(e.target.value)}>
-              <option value="">-- Selectează --</option>
-              {availableMembers
-                .filter(m => {
+            {addSearch && !selectedMemberId && (
+              <div style={{
+                border: '1px solid rgba(26,26,26,0.1)',
+                borderRadius: '4px',
+                marginTop: '0.25rem',
+                maxHeight: '200px',
+                overflowY: 'auto'
+              }}>
+                {availableMembers.filter(m => {
                   const q = addSearch.toLowerCase()
                   return (
                     m.firstName.toLowerCase().includes(q) ||
                     m.lastName.toLowerCase().includes(q) ||
                     m.email.toLowerCase().includes(q)
                   )
-                })
-                .map(m => (
-                  <option key={m.memberId} value={m.memberId}>
-                    {m.firstName} {m.lastName} — {m.email}
-                  </option>
-                ))}
-            </select>
+                }).length === 0 ? (
+                  <div style={{ padding: '0.75rem 1rem', fontFamily: 'var(--font-body)', fontSize: '0.9rem', opacity: 0.5 }}>
+                    Niciun rezultat
+                  </div>
+                ) : availableMembers
+                    .filter(m => {
+                      const q = addSearch.toLowerCase()
+                      return (
+                        m.firstName.toLowerCase().includes(q) ||
+                        m.lastName.toLowerCase().includes(q) ||
+                        m.email.toLowerCase().includes(q)
+                      )
+                    })
+                    .map(m => (
+                      <div
+                        key={m.memberId}
+                        onClick={() => { setSelectedMemberId(m.memberId); setAddSearch(`${m.firstName} ${m.lastName}`) }}
+                        style={{
+                          padding: '0.75rem 1rem',
+                          fontFamily: 'var(--font-body)',
+                          fontSize: '0.9rem',
+                          cursor: 'pointer',
+                          borderBottom: '1px solid rgba(26,26,26,0.06)'
+                        }}
+                        onMouseEnter={e => e.currentTarget.style.backgroundColor = 'rgba(26,26,26,0.04)'}
+                        onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}
+                      >
+                        {m.firstName} {m.lastName}
+                        <span style={{ opacity: 0.5, marginLeft: '0.5rem', fontSize: '0.8rem' }}>{m.email}</span>
+                      </div>
+                    ))}
+              </div>
+            )}
+            {selectedMemberId && (
+              <div style={{
+                marginTop: '0.5rem',
+                padding: '0.5rem 0.75rem',
+                background: 'rgba(232, 184, 75, 0.15)',
+                borderRadius: '4px',
+                fontFamily: 'var(--font-body)',
+                fontSize: '0.85rem',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center'
+              }}>
+                <span>{addSearch}</span>
+                <button
+                  onClick={() => { setSelectedMemberId(''); setAddSearch('') }}
+                  style={{ background: 'none', border: 'none', cursor: 'pointer', opacity: 0.5, fontSize: '0.8rem' }}
+                >
+                  ✕
+                </button>
+              </div>
+            )}
           </div>
           <div className={styles.formActions}>
             <button className={styles.btnEdit} onClick={() => { setShowAdd(false); setSelectedMemberId(''); setAddSearch('') }}>

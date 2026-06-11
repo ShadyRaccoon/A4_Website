@@ -136,4 +136,24 @@ export const api = {
     method: 'PATCH',
     headers: authHeaders(token),
   }),
+
+  createAccount: (token, dto) =>
+  fetch(`${BASE_URL}/auth/create-account`, {
+    method: 'POST',
+    headers: authHeaders(token),
+    body: JSON.stringify(dto)
+  }),
+
+  sendDeviceToken: (token, userId) =>
+  fetch(`${BASE_URL}/auth/${userId}/send-device-token`, {
+    method: 'POST',
+    headers: authHeaders(token),
+  }),
+
+  sendDeviceTokenByEmail: (token, email) =>
+  fetch(`${BASE_URL}/auth/device-token`, {
+    method: 'POST',
+    headers: authHeaders(token),
+    body: JSON.stringify({ email })
+  }),
 }

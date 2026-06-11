@@ -22,20 +22,23 @@ public class DeviceService : IDeviceService
         return Convert.ToHexString(bytes).ToLower();
     }
 
-    public async Task<bool> RegisterAsync(string token, string userId, string deviceIdentifier)
+    public async Task<bool> RegisterAsync(string token, string deviceIdentifier)
     {
         var deviceToken = await _context.DeviceTokens
+            .Include(t => t.Member)
+            .ThenInclude(m => m.UserAccount)
             .FirstOrDefaultAsync(t => t.Token == token
-                                   && !t.IsUsed
-                                   && t.ExpiresAt > DateTime.UtcNow);
+                                      && !t.IsUsed
+                                      && t.ExpiresAt > DateTime.UtcNow);
 
         if (deviceToken == null) return false;
+        if (deviceToken.Member?.UserAccount == null) return false;
 
         deviceToken.IsUsed = true;
 
         var device = new RegisteredDevice
         {
-            UserId = userId,
+            UserId = deviceToken.Member.UserAccount.Id,
             DeviceIdentifier = Hash(deviceIdentifier),
             IsActive = true,
             RegisteredAt = DateTime.UtcNow
@@ -45,7 +48,7 @@ public class DeviceService : IDeviceService
         await _context.SaveChangesAsync();
         return true;
     }
-
+    
     public async Task<bool> IsDeviceRegisteredAsync(string deviceIdentifier)
     {
         var hashed = Hash(deviceIdentifier);

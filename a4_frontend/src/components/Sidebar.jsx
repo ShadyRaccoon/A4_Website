@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 import styles from './Sidebar.module.css'
 
 const sidebarItems = {
@@ -24,7 +25,14 @@ const sidebarItems = {
 
 function Sidebar({ role = 'admin' }) {
   const [open, setOpen] = useState(true)
+  const { logout } = useAuth()
+  const navigate = useNavigate()
   const items = sidebarItems[role] || sidebarItems.member
+
+  const handleLogout = () => {
+    logout()
+    navigate('/admin/login')
+  }
 
   return (
     <aside className={`${styles.sidebar} ${open ? styles.open : styles.closed}`}>
@@ -45,6 +53,9 @@ function Sidebar({ role = 'admin' }) {
           </NavLink>
         ))}
       </nav>
+      <button className={styles.logoutBtn} onClick={handleLogout}>
+        {open ? '🚪 Ieșire' : '🚪'}
+      </button>
     </aside>
   )
 }

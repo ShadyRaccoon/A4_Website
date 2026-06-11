@@ -134,21 +134,21 @@ public class AccountRequestService : IAccountRequestService
         await _context.SaveChangesAsync();
 
         await _emailService.SendEmailAsync(
-            request.Author.Email!,
+            request.RequestedMember.Email!,
             "Cererea ta a fost acceptată — Înregistrează-ți dispozitivul",
             $"""
-            Salut,
+             Salut,
 
-            Cererea ta de asociere cu membrul {request.RequestedMember.FirstName} {request.RequestedMember.LastName} a fost acceptată.
+             Cererea ta de asociere cu membrul {request.RequestedMember.FirstName} {request.RequestedMember.LastName} a fost acceptată.
 
-            Folosește tokenul de mai jos pentru a-ți înregistra dispozitivul:
+             Accesează linkul de mai jos pentru a-ți înregistra dispozitivul:
 
-            {token}
+             http://localhost:5173/register-device?token={token}
 
-            Tokenul expiră în 7 zile.
+             Linkul expiră în 7 zile.
 
-            - Echipa A4
-            """
+             - Echipa A4
+             """
         );
 
         return true;

@@ -20,7 +20,7 @@ public class DeviceCheckMiddleware
             path.StartsWith("/api/post") ||
             path.StartsWith("/api/member") ||
             path.StartsWith("/api/department") ||
-            path.StartsWith("/api/device/register") ||
+            path.StartsWith("/api/device") ||
             path.StartsWith("/api/blobstorage") ||
             path.StartsWith("/api/picture") ||
             path.StartsWith("/api/department") ||

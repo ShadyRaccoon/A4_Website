@@ -12,6 +12,10 @@ function Accounts() {
   const [search, setSearch] = useState('')
   const [debouncedSearch, setDebouncedSearch] = useState('')
   const [page, setPage] = useState(1)
+  const [showForm, setShowForm] = useState(false)
+  const [newEmail, setNewEmail] = useState('')
+  const [newRole, setNewRole] = useState('Member')
+  const [creating, setCreating] = useState(false)
 
   useEffect(() => {
     const timer = setTimeout(() => setDebouncedSearch(search), 300)
@@ -53,6 +57,46 @@ function Accounts() {
     }
   }
 
+  const handleCreateAccount = async () => {
+    if (!newEmail) return
+    setCreating(true)
+    try {
+      const res = await api.createAccount(token, { email: newEmail, role: newRole })
+      if (!res.ok) {
+        const msg = await res.text()
+        alert(msg)
+        return
+      }
+      alert('Cont creat și email trimis!')
+      setNewEmail('')
+      setNewRole('Member')
+      setShowForm(false)
+      // reload accounts
+      api.getAccounts(token)
+        .then(res => res.json())
+        .then(data => setAccounts(data.sort((a, b) => {
+          if (a.isActive && !b.isActive) return -1
+          if (!a.isActive && b.isActive) return 1
+          return new Date(b.createdAt) - new Date(a.createdAt)
+        })))
+    } catch (err) {
+      alert('Eroare: ' + err.message)
+    } finally {
+      setCreating(false)
+    }
+  }
+
+  const handleSendDeviceToken = async (id, email) => {
+    if (!confirm(`Trimite token dispozitiv la ${email}?`)) return
+    try {
+      const res = await api.sendDeviceToken(token, id)
+      if (!res.ok) { alert('Eroare.'); return }
+      alert('Token trimis!')
+    } catch (err) {
+      alert('Eroare: ' + err.message)
+    }
+  }
+
   const filtered = accounts.filter(a => {
     const q = debouncedSearch.toLowerCase()
     return (
@@ -71,7 +115,41 @@ function Accounts() {
     <div>
       <div className={styles.header}>
         <h1 className={styles.title}>Conturi</h1>
+        <button className={styles.btnPrimary} onClick={() => setShowForm(!showForm)}>
+          + Cont nou
+        </button>
       </div>
+
+      {showForm && (
+        <div className={styles.formCard}>
+          <h2 className={styles.formTitle}>Cont nou</h2>
+          <div className={styles.formField}>
+            <label>Email</label>
+            <input
+              type="email"
+              placeholder="email@example.com"
+              value={newEmail}
+              onChange={e => setNewEmail(e.target.value)}
+            />
+          </div>
+          <div className={styles.formField}>
+            <label>Rol</label>
+            <select value={newRole} onChange={e => setNewRole(e.target.value)}>
+              <option value="Member">Member</option>
+              <option value="Bureau">Bureau</option>
+              <option value="Admin">Admin</option>
+            </select>
+          </div>
+          <div className={styles.formActions}>
+            <button className={styles.btnEdit} onClick={() => { setShowForm(false); setNewEmail(''); setNewRole('Member') }}>
+              Anulează
+            </button>
+            <button className={styles.btnPrimary} onClick={handleCreateAccount} disabled={!newEmail || creating}>
+              {creating ? 'Se creează...' : 'Creează cont'}
+            </button>
+          </div>
+        </div>
+      )}
 
       <div className={styles.formField} style={{ maxWidth: 360, marginBottom: '1.5rem' }}>
         <input
@@ -107,6 +185,12 @@ function Accounts() {
               </td>
               <td>{new Date(account.createdAt).toLocaleDateString('ro-RO')}</td>
               <td className={styles.actions}>
+                <button
+                  className={styles.btnEdit}
+                  onClick={() => handleSendDeviceToken(account.id, account.email)}
+                >
+                  Token
+                </button>
                 <button
                   className={account.isActive ? styles.btnDanger : styles.btnEdit}
                   onClick={() => handleToggleActive(account.id)}

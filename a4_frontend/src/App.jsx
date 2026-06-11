@@ -23,6 +23,8 @@ import { AuthProvider } from './context/AuthContext.jsx'
 import EditPost from './pages/admin/EditPost'
 import EditMember from './pages/admin/EditMember'
 import DepartmentDetail from './pages/admin/DepartmentDetail'
+import RegisterDevice from './pages/RegisterDevice'
+
 
 
 
@@ -57,6 +59,7 @@ function App() {
             <Route path="membri/editeaza/:id" element={<EditMember />} />
             <Route path="departamente/:id" element={<DepartmentDetail />} />
           </Route>
+          <Route path="/register-device" element={<RegisterDevice />} />
         </Routes>
         <Footer />
       </BrowserRouter>

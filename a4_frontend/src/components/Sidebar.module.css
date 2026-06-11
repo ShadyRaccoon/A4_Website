@@ -100,3 +100,22 @@
     padding: 0.5rem 0.75rem;
   }
 }
+
+.logoutBtn {
+  margin-top: auto;
+  padding: 0.75rem 1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-meta);
+  font-size: 0.85rem;
+  color: var(--text);
+  opacity: 0.4;
+  text-align: left;
+  width: 100%;
+  transition: opacity 0.2s;
+}
+
+.logoutBtn:hover {
+  opacity: 0.8;
+}

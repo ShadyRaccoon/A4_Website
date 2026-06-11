@@ -84,3 +84,23 @@
     display: flex;
   }
 }
+
+.authBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-nav);
+  font-size: inherit;
+  color: var(--text);
+  padding: 0;
+}
+
+.authBtn:hover {
+  opacity: 0.6;
+}
+
+.activeLink {
+  font-weight: 600;
+  opacity: 1;
+  border-bottom: 2px solid var(--accent);
+}
