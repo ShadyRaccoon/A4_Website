@@ -122,7 +122,7 @@ app.UseCors(corsAllowPolicy);
 app.UseMiddleware<DeviceCheckMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
-
+Console.WriteLine(2+2);
 app.MapControllers();
 
 app.Run();
