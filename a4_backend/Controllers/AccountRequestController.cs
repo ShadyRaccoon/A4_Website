@@ -19,7 +19,7 @@ public class AccountRequestController : ControllerBase
     }
 
     [HttpGet]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,Bureau")]
     public async Task<IActionResult> GetAll()
     {
         var requests = await _accountRequestService.GetAllAsync();

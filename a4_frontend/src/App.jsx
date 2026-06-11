@@ -39,10 +39,10 @@ function App() {
           <Route path="/departments" element={<Departments />} />
           <Route path="/admin/login" element={<Login />} />
           <Route path="/panou" element={
-            <ProtectedRoute>
-              <DashboardLayout />
-            </ProtectedRoute>
-          }>
+              <ProtectedRoute>
+                <DashboardLayout />
+              </ProtectedRoute>
+            }>
             <Route index element={<Dashboard />} />
             <Route path="postari" element={<Posts />} />
             <Route path="postari/nou" element={<NewPost />} />

@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../../context/AuthContext'
+import { useOutletContext } from 'react-router-dom'
 import { api } from '../../api/api'
 import styles from './AdminTable.module.css'
 
 const PAGE_SIZE = 15
 
 function AccountRequests() {
-  const { token } = useAuth()
+  const { token, user } = useAuth()
+  const { role } = useOutletContext()
   const [requests, setRequests] = useState([])
   const [eligibleMembers, setEligibleMembers] = useState([])
   const [loading, setLoading] = useState(true)
@@ -79,7 +81,11 @@ function AccountRequests() {
     }
   }
 
-  const filtered = requests.filter(r => {
+  const visibleRequests = role === 'bureau'
+    ? requests.filter(r => r.authorEmail === user?.email)
+    : requests
+
+  const filtered = visibleRequests.filter(r => {
     const q = debouncedSearch.toLowerCase()
     return (
       r.requestedMemberName.toLowerCase().includes(q) ||
@@ -110,7 +116,6 @@ function AccountRequests() {
         </button>
       </div>
 
-      
       {showForm && (
         <div className={styles.formCard}>
           <h2 className={styles.formTitle}>Cerere nouă</h2>
@@ -201,7 +206,7 @@ function AccountRequests() {
             <th>Membru</th>
             <th>Status</th>
             <th>Dată</th>
-            <th>Acțiuni</th>
+            {role === 'admin' && <th>Acțiuni</th>}
           </tr>
         </thead>
         <tbody>
@@ -220,12 +225,14 @@ function AccountRequests() {
                 </span>
               </td>
               <td>{new Date(req.createdAt).toLocaleDateString('ro-RO')}</td>
-              <td className={styles.actions}>
-                {req.status === 'Pending' && <>
-                  <button className={styles.btnEdit} onClick={() => handleAccept(req.accountRequestId)}>Acceptă</button>
-                  <button className={styles.btnDanger} onClick={() => handleDeny(req.accountRequestId)}>Refuză</button>
-                </>}
-              </td>
+              {role === 'admin' && (
+                <td className={styles.actions}>
+                  {req.status === 'Pending' && <>
+                    <button className={styles.btnEdit} onClick={() => handleAccept(req.accountRequestId)}>Acceptă</button>
+                    <button className={styles.btnDanger} onClick={() => handleDeny(req.accountRequestId)}>Refuză</button>
+                  </>}
+                </td>
+              )}
             </tr>
           ))}
         </tbody>

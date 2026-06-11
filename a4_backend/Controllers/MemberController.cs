@@ -64,8 +64,6 @@ public class MemberController : ControllerBase
     
     [HttpGet("eligible-for-account")]
     [Authorize(Roles = "Bureau,Admin")]
-    [HttpGet("eligible-for-account")]
-    [Authorize(Roles = "Bureau,Admin,Member")]
     public async Task<IActionResult> GetEligibleForAccount()
     {
         var membersWithPendingRequests = await _context.AccountRequests

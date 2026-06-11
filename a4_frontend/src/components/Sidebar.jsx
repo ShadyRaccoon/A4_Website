@@ -10,6 +10,7 @@ const sidebarItems = {
     { emoji: '📝', label: 'Postări', path: '/panou/postari' },
     { emoji: '👥', label: 'Membri', path: '/panou/membri' },
     { emoji: '🏢', label: 'Departamente', path: '/panou/departamente' },
+    { emoji: '📋', label: 'Cereri Cont', path: '/panou/cereri' },
   ],
   admin: [
     { emoji: '📝', label: 'Postări', path: '/panou/postari' },
