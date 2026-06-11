@@ -30,18 +30,18 @@ function Navbar() {
       </button>
 
       <ul className={`${styles.links} ${open ? styles.open : ''}`}>
-        <li><NavLink to="/" end className={({ isActive }) => isActive ? styles.activeLink : ''} onClick={() => setOpen(false)}>Home</NavLink></li>
-        <li><NavLink to="/articles" className={({ isActive }) => isActive ? styles.activeLink : ''} onClick={() => setOpen(false)}>Articles</NavLink></li>
-        <li><NavLink to="/departments" className={({ isActive }) => isActive ? styles.activeLink : ''} onClick={() => setOpen(false)}>Departments</NavLink></li>
-        <li><NavLink to="/contacts" className={({ isActive }) => isActive ? styles.activeLink : ''} onClick={() => setOpen(false)}>Contacts</NavLink></li>
-        <li><NavLink to="/about" className={({ isActive }) => isActive ? styles.activeLink : ''} onClick={() => setOpen(false)}>About</NavLink></li>
+        <li><NavLink to="/" end className={({ isActive }) => isActive ? styles.activeLink : ''} onClick={() => setOpen(false)}>Acasă</NavLink></li>
+        <li><NavLink to="/articles" className={({ isActive }) => isActive ? styles.activeLink : ''} onClick={() => setOpen(false)}>Articole</NavLink></li>
+        <li><NavLink to="/departments" className={({ isActive }) => isActive ? styles.activeLink : ''} onClick={() => setOpen(false)}>Departamente</NavLink></li>
+        <li><NavLink to="/contacts" className={({ isActive }) => isActive ? styles.activeLink : ''} onClick={() => setOpen(false)}>Contact</NavLink></li>
+        <li><NavLink to="/about" className={({ isActive }) => isActive ? styles.activeLink : ''} onClick={() => setOpen(false)}>Despre</NavLink></li>
         {deviceRegistered && token && (
           <li><NavLink to="/panou" className={({ isActive }) => isActive ? styles.activeLink : ''} onClick={() => setOpen(false)}>Panou</NavLink></li>
         )}
         {deviceRegistered && (
           token
-            ? <li><button className={styles.authBtn} onClick={handleLogout}>Logout</button></li>
-            : <li><NavLink to="/admin/login" className={({ isActive }) => isActive ? styles.activeLink : ''} onClick={() => setOpen(false)}>Login</NavLink></li>
+            ? <li><button className={styles.authBtn} onClick={handleLogout}>Ieșire</button></li>
+            : <li><NavLink to="/admin/login" className={({ isActive }) => isActive ? styles.activeLink : ''} onClick={() => setOpen(false)}>Autentificare</NavLink></li>
         )}
       </ul>
     </nav>
