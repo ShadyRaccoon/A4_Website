@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { api } from '../api/api'
+import { Link } from 'react-router-dom'
 import styles from './FeaturedPost.module.css'
 
 function FeaturedPost() {
@@ -19,7 +20,9 @@ function FeaturedPost() {
   return (
     <section className={styles.featured}>
       <div className={styles.text}>
-        <h1>{post.title}</h1>
+        <Link to={`/articles/${post.postId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+          <h1 className={styles.title}>{post.title}</h1>
+        </Link>
         <hr className={styles.divider} />
         <p>{post.body}</p>
         <hr className={styles.divider} />

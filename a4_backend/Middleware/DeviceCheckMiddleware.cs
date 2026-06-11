@@ -17,7 +17,8 @@ public class DeviceCheckMiddleware
 
         // exact matches for public read endpoints
         if (path == "/api/post" ||
-            path == "/api/department")
+            path == "/api/department" ||
+            (path.StartsWith("/api/post/") && path.Split('/').Length == 4 && int.TryParse(path.Split('/')[3], out _)))
         {
             await _next(context);
             return;

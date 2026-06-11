@@ -24,6 +24,7 @@ import EditPost from './pages/admin/EditPost'
 import EditMember from './pages/admin/EditMember'
 import DepartmentDetail from './pages/admin/DepartmentDetail'
 import RegisterDevice from './pages/RegisterDevice'
+import PostView from './pages/PostView'
 
 
 
@@ -35,6 +36,7 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/articles/:id" element={<PostView />} />
           <Route path="/articles" element={<Articles />} />
           <Route path="/contacts" element={<Contacts />} />
           <Route path="/about" element={<About />} />

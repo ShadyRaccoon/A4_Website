@@ -156,4 +156,7 @@ export const api = {
     headers: authHeaders(token),
     body: JSON.stringify({ email })
   }),
+
+  getPostById: (id) =>
+  fetch(`${BASE_URL}/post/${id}`),
 }

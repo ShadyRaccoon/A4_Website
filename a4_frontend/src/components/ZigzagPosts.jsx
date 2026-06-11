@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { api } from '../api/api'
+import { Link } from 'react-router-dom'
 import styles from './ZigzagPosts.module.css'
 
 function ZigzagPosts() {
@@ -28,7 +29,9 @@ function ZigzagPosts() {
             )}
           </div>
           <div className={styles.content}>
-            <h3>{post.title}</h3>
+            <Link to={`/articles/${post.postId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+              <h3>{post.title}</h3>
+            </Link>
             <p>{post.body}</p>
             <span className={styles.meta}>{post.authorName} · {new Date(post.createdAt).toLocaleDateString('ro-RO')}</span>
           </div>
