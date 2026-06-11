@@ -15,21 +15,27 @@ public class DeviceCheckMiddleware
     {
         var path = context.Request.Path.Value?.ToLower() ?? "";
 
-        // skip device check for public endpoints
-        if (path.StartsWith("/api/auth") ||
-            path.StartsWith("/api/post") ||
-            path.StartsWith("/api/member") ||
-            path.StartsWith("/api/department") ||
-            path.StartsWith("/api/device") ||
-            path.StartsWith("/api/blobstorage") ||
-            path.StartsWith("/api/picture") ||
-            path.StartsWith("/api/department") ||
-            path.StartsWith("/api/accountrequest"))
+        // exact matches for public read endpoints
+        if (path == "/api/post" ||
+            path == "/api/department")
         {
             await _next(context);
             return;
         }
 
+        // public auth and registration endpoints
+        if (path.StartsWith("/api/auth/login") ||
+            path.StartsWith("/api/auth/register") ||
+            path.StartsWith("/api/device/register") ||
+            path.StartsWith("/api/blobstorage/download") ||
+            path.StartsWith("/api/picture") ||
+            path.StartsWith("/api/register-device"))
+        {
+            await _next(context);
+            return;
+        }
+
+        // everything else requires a registered device
         var deviceId = context.Request.Cookies["DeviceId"];
 
         if (string.IsNullOrEmpty(deviceId) || !await deviceService.IsDeviceRegisteredAsync(deviceId))
