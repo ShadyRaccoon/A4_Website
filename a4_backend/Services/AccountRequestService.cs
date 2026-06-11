@@ -62,6 +62,13 @@ public class AccountRequestService : IAccountRequestService
 
     public async Task<AccountRequestResponseDto> CreateAsync(CreateAccountRequestDto dto, string authorId)
     {
+        var existingPending = await _context.AccountRequests
+            .AnyAsync(r => r.RequestedMemberId == dto.RequestedMemberId
+                           && r.Status == AccountRequestStatus.Pending);
+
+        if (existingPending)
+            throw new InvalidOperationException("A pending request already exists for this member.");
+
         var request = new AccountRequest
         {
             RequestedMemberId = dto.RequestedMemberId,
@@ -73,7 +80,7 @@ public class AccountRequestService : IAccountRequestService
         await _context.SaveChangesAsync();
 
         return await GetByIdAsync(request.AccountRequestId)
-            ?? throw new Exception("Request not found after creation");
+               ?? throw new Exception("Request not found after creation");
     }
 
     public async Task<bool> AcceptAsync(int id)

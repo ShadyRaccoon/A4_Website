@@ -1,7 +1,10 @@
+using a4_backend.Data;
 using a4_backend.DTOs;
 using a4_backend.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using a4_backend.Models;
 
 namespace a4_backend.Controllers;
 
@@ -10,10 +13,12 @@ namespace a4_backend.Controllers;
 public class MemberController : ControllerBase
 {
     private readonly IMemberService _memberService;
+    private readonly AppDbContext _context;
 
-    public MemberController(IMemberService memberService)
+    public MemberController(IMemberService memberService, AppDbContext context)
     {
         _memberService = memberService;
+        _context = context;
     }
 
     [HttpGet]
@@ -55,5 +60,27 @@ public class MemberController : ControllerBase
         var result = await _memberService.MarkAsLeftAsync(id);
         if (!result) return NotFound();
         return NoContent();
+    }
+    
+    [HttpGet("eligible-for-account")]
+    [Authorize(Roles = "Bureau,Admin")]
+    [HttpGet("eligible-for-account")]
+    [Authorize(Roles = "Bureau,Admin,Member")]
+    public async Task<IActionResult> GetEligibleForAccount()
+    {
+        var membersWithPendingRequests = await _context.AccountRequests
+            .Where(r => r.Status == AccountRequestStatus.Pending)
+            .Select(r => r.RequestedMemberId)
+            .ToListAsync();
+
+        var members = await _context.Members
+            .Include(m => m.UserAccount)
+            .Where(m => m.LeaveDate == null
+                        && (m.UserAccount == null || !m.UserAccount.IsActive)
+                        && !membersWithPendingRequests.Contains(m.MemberId))
+            .Select(m => new { m.MemberId, m.FirstName, m.LastName, m.Email })
+            .ToListAsync();
+
+        return Ok(members);
     }
 }

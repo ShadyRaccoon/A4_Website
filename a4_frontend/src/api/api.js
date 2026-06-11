@@ -118,4 +118,22 @@ export const api = {
     headers: authHeaders(token),
     body: JSON.stringify(dto)
   }),
+
+  createRequest: (token, dto) =>
+  fetch(`${BASE_URL}/accountrequest`, {
+    method: 'POST',
+    headers: authHeaders(token),
+    body: JSON.stringify(dto)
+  }),
+
+  getAccounts: (token) =>
+  fetch(`${BASE_URL}/auth/accounts`, {
+    headers: authHeaders(token),
+  }),
+
+  toggleAccountActive: (token, id) =>
+  fetch(`${BASE_URL}/auth/${id}/toggle-active`, {
+    method: 'PATCH',
+    headers: authHeaders(token),
+  }),
 }

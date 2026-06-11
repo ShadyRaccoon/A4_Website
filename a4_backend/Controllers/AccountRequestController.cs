@@ -36,14 +36,21 @@ public class AccountRequestController : ControllerBase
     }
 
     [HttpPost]
-    [Authorize(Roles = "Member,Bureau")]
+    [Authorize(Roles = "Member,Bureau,Admin")]
     public async Task<IActionResult> Create(CreateAccountRequestDto dto)
     {
-        var authorId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
-        var request = await _accountRequestService.CreateAsync(dto, authorId);
-        return CreatedAtAction(nameof(GetById), new { id = request.AccountRequestId }, request);
+        try
+        {
+            var authorId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+            var request = await _accountRequestService.CreateAsync(dto, authorId);
+            return CreatedAtAction(nameof(GetById), new { id = request.AccountRequestId }, request);
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
-
+    
     [HttpPatch("{id:int}/accept")]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Accept(int id)

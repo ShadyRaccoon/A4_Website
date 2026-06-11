@@ -23,7 +23,8 @@ public class DeviceCheckMiddleware
             path.StartsWith("/api/device/register") ||
             path.StartsWith("/api/blobstorage") ||
             path.StartsWith("/api/picture") ||
-            path.StartsWith("/api/department"))
+            path.StartsWith("/api/department") ||
+            path.StartsWith("/api/accountrequest"))
         {
             await _next(context);
             return;
